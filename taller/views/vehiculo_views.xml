@@ -1,0 +1,51 @@
+<odoo>
+    <!-- Vista de formulario -->
+    <record id="view_taller_vehiculo_form" model="ir.ui.view">
+        <field name="name">taller.vehiculo.form</field>
+        <field name="model">taller.vehiculo</field>
+        <field name="arch" type="xml">
+            <form string="Vehículo">
+                <sheet>
+                    <group>
+                        <field name="matricula"/>
+                        <field name="numero_chasis"/>
+                        <field name="marca"/>
+                        <field name="modelo"/>
+                        <field name="ano"/>
+                        <field name="cliente_ids" widget="many2many_tags"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Vista de árbol -->
+    <record id="view_taller_vehiculo_tree" model="ir.ui.view">
+        <field name="name">taller.vehiculo.tree</field>
+        <field name="model">taller.vehiculo</field>
+        <field name="arch" type="xml">
+            <tree string="Vehículos">
+                <field name="matricula"/>
+                <field name="marca"/>
+                <field name="modelo"/>
+                <field name="ano"/>
+                <field name="cliente_ids" widget="many2many_tags"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Vista de búsqueda --> 
+    <record id="view_taller_vehiculo_search" model="ir.ui.view">
+        <field name="name">taller.vehiculo.search</field>
+        <field name="model">taller.vehiculo</field>
+        <field name="arch" type="xml">
+            <search string="Buscar Vehículo">
+                <field name="matricula"/>
+                <field name="marca"/>
+                <field name="modelo"/>
+                <field name="ano"/>
+            </search>
+        </field>
+    </record>
+</odoo>
+

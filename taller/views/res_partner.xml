@@ -1,0 +1,28 @@
+<odoo>
+    <data>
+        <record id="view_partner_form_inherit_taller" model="ir.ui.view">
+            <field name="name">res.partner.form.inherit.taller</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+                <notebook position="inside">
+                    <page string="Vehículos">
+                        <field name="vehiculo_ids">
+                            <tree>
+                                <field name="matricula"/>
+                                <!-- Agrega otros campos si tu modelo de vehículo los tiene -->
+                                <field name="numero_chasis"/>
+                                <field name="marca"/>
+                                <field name="modelo"/>
+                                <field name="ano"/>
+                                <field name="cliente_ids" widget="many2many_tags"/>
+                            </tree>
+                        </field>
+                    </page>
+                </notebook>
+            </field>
+        </record>
+    </data>
+</odoo>
+
+

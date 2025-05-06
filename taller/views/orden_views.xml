@@ -1,0 +1,36 @@
+<odoo>
+    <record id="view_taller_orden_form" model="ir.ui.view">
+        <field name="name">taller.orden.form</field>
+        <field name="model">taller.orden</field>
+        <field name="arch" type="xml">
+            <form string="Orden de Reparación">
+                <sheet>
+                    <group>
+                        <field name="vehiculo_id"/>
+                        <field name="tecnico_id"/>
+                        <field name="descripcion"/>
+                        <field name="fecha_inicio"/>
+                        <field name="fecha_fin"/>
+                        <field name="estado"/>
+                        <field name="factura_id"/>
+                        <field name="repuesto_ids" widget="many2many_tags"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_taller_orden_tree" model="ir.ui.view">
+        <field name="name">taller.orden.tree</field>
+        <field name="model">taller.orden</field>
+        <field name="arch" type="xml">
+            <tree string="Órdenes de Reparación">
+                <field name="vehiculo_id"/>
+                <field name="tecnico_id"/>
+                <field name="fecha_inicio"/>
+                <field name="fecha_fin"/>
+                <field name="estado"/>
+            </tree>
+        </field>
+    </record>
+</odoo>

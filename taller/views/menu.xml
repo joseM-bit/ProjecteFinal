@@ -1,0 +1,28 @@
+<odoo>
+    <!-- Acciones primero -->
+    <record id="action_taller_vehiculo" model="ir.actions.act_window">
+        <field name="name">Vehículos</field>
+        <field name="res_model">taller.vehiculo</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_taller_vehiculo_search"/>
+    </record>
+
+    <record id="action_taller_orden" model="ir.actions.act_window">
+        <field name="name">Órdenes de Reparación</field>
+        <field name="res_model">taller.orden</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <record id="action_account_move_taller" model="ir.actions.act_window">
+        <field name="name">Facturas del Taller</field>
+        <field name="res_model">account.move</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('move_type','=','out_invoice')]</field>
+    </record>
+
+    <!-- Menús después -->
+    <menuitem id="menu_taller_root" name="Taller" sequence="10"/>
+    <menuitem id="menu_taller_vehiculo" name="Vehículos" parent="menu_taller_root" action="action_taller_vehiculo"/>
+    <menuitem id="menu_taller_orden" name="Órdenes de Reparación" parent="menu_taller_root" action="action_taller_orden"/>
+    <menuitem id="menu_taller_facturas" name="Facturas" parent="menu_taller_root" action="action_account_move_taller"/>
+</odoo>
+
