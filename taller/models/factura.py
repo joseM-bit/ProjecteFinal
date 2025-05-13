@@ -1,6 +1,7 @@
 from odoo import models, fields, api
 
 class Factura(models.Model):
+    _name ='account.move'
     _inherit = 'account.move'
 
     vehiculo_ids = fields.Many2many(

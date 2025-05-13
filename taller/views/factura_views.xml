@@ -1,38 +1,22 @@
 <odoo>
-    <record id="report_invoice_document_inherit" model="ir.ui.view">
-        <field name="name">account.invoice.report.taller</field>
+    <record id="view_move_form_inherit" model="ir.ui.view">
+        <field name="name">account.out.invoice.tree</field>
         <field name="model">account.move</field>
-        <field name="inherit_id" ref="account.report_invoice_document"/>
+        <field name="inherit_id" ref="account.out.invoice.tree"/>
         <field name="arch" type="xml">
-            <!-- Insertar después del total de la factura -->
-            <xpath expr="//div[hasclass('invoice_total')]" position="after">
-                <div class="custom_vehicles_section">
-                    <h3>Vehículos Asociados</h3>
-                    <table class="table table-condensed">
-                        <thead>
-                            <tr>
-                                <th>Matrícula</th>
-                                <th>Número de Chasis</th>
-                                <th>Marca</th>
-                                <th>Modelo</th>
-                                <th>Año</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr t-foreach="doc.vehiculo_ids" t-as="vehiculo">
-                                <td t-field="vehiculo.matricula"/>
-                                <td t-field="vehiculo.numero_chasis"/>
-                                <td t-field="vehiculo.marca"/>
-                                <td t-field="vehiculo.modelo"/>
-                                <td t-field="vehiculo.ano"/>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+            <!-- Añadir los vehículos relacionados con más detalles -->
+            <xpath expr="//field[@name='partner_id']" position="after">
+                <field name="vehiculo_ids" widget="many2many_tags" options="{'no_create': True}" placeholder="Seleccione vehículos"/>
+            </xpath>
+
+            <!-- Aquí añadimos los campos adicionales de la clase 'vehiculo' -->
+            <xpath expr="//group[@name='invoice_details']" position="after">
+                <group>
+                    <field name="vehiculo_ids" widget="many2many_tags"/>
+                </group>
             </xpath>
         </field>
     </record>
 </odoo>
-
 
 
