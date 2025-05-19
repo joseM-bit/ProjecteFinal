@@ -1,20 +1,46 @@
 <odoo>
-    <record id="view_taller_orden_form" model="ir.ui.view">
+   <record id="view_taller_orden_form" model="ir.ui.view">
         <field name="name">taller.orden.form</field>
         <field name="model">taller.orden</field>
         <field name="arch" type="xml">
             <form string="Orden de Reparación">
+                <header>
+                    <button name="crear_factura"
+                            type="object"
+                            string="Crear Factura"
+                            class="btn-primary"
+                            attrs="{'invisible': ['|', ('factura_id', '!=', False), ('estado', '!=', 'completado')]}" />
+                    
+                    <button name="action_open_factura"
+                            type="object"
+                            string="Ver Factura"
+                            class="btn-secondary"
+                            attrs="{'invisible': [('factura_id', '=', False)]}" />
+                </header>
+
                 <sheet>
+                    <!-- Campo requerido para que attrs funcione -->
+                    <field name="factura_id" invisible="1"/>
+
                     <group>
                         <field name="vehiculo_id"/>
                         <field name="tecnico_id"/>
-                        <field name="descripcion"/>
                         <field name="fecha_inicio"/>
                         <field name="fecha_fin"/>
                         <field name="estado"/>
-                        <field name="factura_id"/>
-                        <field name="repuesto_ids" widget="many2many_tags"/>
+                        <field name="kilometros"/>
                     </group>
+
+                    <notebook>
+                        <page string="Repuestos">
+                            <field name="repuesto_ids" context="{'default_orden_id': active_id}" create="true" edit="true" delete="true">
+                                <tree editable="bottom">
+                                    <field name="producto_id"/>
+                                    <field name="cantidad"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
                 </sheet>
             </form>
         </field>

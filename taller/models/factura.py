@@ -1,14 +1,15 @@
 from odoo import models, fields, api
 
 class Factura(models.Model):
-    _name ='account.move'
     _inherit = 'account.move'
 
+    kilometros = fields.Integer(string="Kilómetros vehículo")
     vehiculo_ids = fields.Many2many(
         'taller.vehiculo',
         string="Vehículos relacionados",
-        compute='_compute_vehiculo_ids',
-        store=False
+        relation='factura_vehiculo_rel',  # 🔄 Añade una tabla de relación explícita
+        column1='factura_id',
+        column2='vehiculo_id'
     )
 
     @api.depends('partner_id')
