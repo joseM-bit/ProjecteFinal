@@ -1,5 +1,13 @@
 <odoo>
     <!-- Acciones primero -->
+    <record id="action_clientes_taller" model="ir.actions.act_window">
+        <field name="name">Clientes del Taller</field>
+        <field name="res_model">res.partner</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('vehiculo_ids', '!=', False)]</field>
+        <field name="context">{'search_default_customer': 1}</field>
+    </record>
+
     <record id="action_taller_vehiculo" model="ir.actions.act_window">
         <field name="name">Vehículos</field>
         <field name="res_model">taller.vehiculo</field>
@@ -8,10 +16,11 @@
     </record>
 
     <record id="action_taller_orden" model="ir.actions.act_window">
-        <field name="name">Órdenes de Reparación</field>
+        <field name="name">Albaranes</field>
         <field name="res_model">taller.orden</field>
         <field name="view_mode">tree,form</field>
     </record>
+
     <record id="action_account_move_taller" model="ir.actions.act_window">
         <field name="name">Facturas del Taller</field>
         <field name="res_model">account.move</field>
@@ -19,10 +28,36 @@
         <field name="domain">[('move_type','=','out_invoice')]</field>
     </record>
 
-    <!-- Menús después -->
-    <menuitem id="menu_taller_root" name="Taller" sequence="10"/>
-    <menuitem id="menu_taller_vehiculo" name="Vehículos" parent="menu_taller_root" action="action_taller_vehiculo"/>
-    <menuitem id="menu_taller_orden" name="Órdenes de Reparación" parent="menu_taller_root" action="action_taller_orden"/>
-    <menuitem id="menu_taller_facturas" name="Facturas" parent="menu_taller_root" action="action_account_move_taller"/>
-</odoo>
+    <!-- Acción para presupuestos (corregida) -->
+    <record id="action_account_move_presupuesto" model="ir.actions.act_window">
+        <field name="name">Presupuestos del Taller</field>
+        <field name="res_model">sale.order</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('state', '=', 'draft')]</field> <!-- Eliminado order_type -->
+    </record>
 
+    <!-- Acción Productos Taller -->
+    <record id="action_taller_productos" model="ir.actions.act_window">
+        <field name="name">Productos</field>
+        <field name="res_model">product.product</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <record id="action_taller_productos_con_stock" model="ir.actions.act_window">
+        <field name="name">Productos en Stock</field>
+        <field name="res_model">product.product</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('quantity_available', '>', 0)]</field>
+    </record>
+
+
+
+    <!-- Menús -->
+    <menuitem id="menu_taller_root" name="Taller" sequence="10"/>
+    <menuitem id="menu_taller_clientes_taller_lista" name="Lista de Clientes" parent="menu_taller_root" action="action_clientes_taller" sequence="10"/>
+    <menuitem id="menu_taller_vehiculo" name="Vehículos" parent="menu_taller_root" action="action_taller_vehiculo" sequence="20"/>
+    <menuitem id="menu_taller_orden" name="Albaranes" parent="menu_taller_root" action="action_taller_orden" sequence="30"/>
+    <menuitem id="menu_taller_facturas" name="Facturas" parent="menu_taller_root" action="account.action_move_out_invoice_type" sequence="40"/>
+    <menuitem id="menu_taller_presupuestos" name="Presupuestos" parent="menu_taller_root" action="sale.action_quotations_with_onboarding" sequence="50"/>
+    <menuitem id="menu_taller_productos" name="Productos" parent="menu_taller_root" action="action_taller_productos" sequence="60"/>
+    <menuitem id="menu_taller_stock_productos" name="Stock de Productos" parent="menu_taller_root" action="stock.action_product_stock_view"  sequence="70"/>
+</odoo>

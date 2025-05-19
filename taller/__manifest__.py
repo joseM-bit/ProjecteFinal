@@ -20,7 +20,7 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base','contacts', 'account', 'stock'],
+    'depends': ['base','contacts', 'account', 'stock','sale','product'],
 
     # always loaded
     'data': [
@@ -29,7 +29,12 @@
         'views/views.xml',
         'views/templates.xml',
         'views/orden_views.xml',
+        'views/ordenrepuestoline_views.xml',
+        'views/factura_views.xml',
+        'views/presupuesto_views.xml',
+        'views/productos.xml',
         'views/res_partner.xml',
+        'views/plantillafactura.xml',
         'views/menu.xml'
     ],
     # only loaded in demonstration mode

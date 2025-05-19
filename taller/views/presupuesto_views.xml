@@ -1,0 +1,19 @@
+<odoo>
+    <!-- Heredar la vista formulario de presupuesto para añadir campos -->
+    <record id="view_order_form_inherit_vehiculos" model="ir.ui.view">
+        <field name="name">sale.order.form.inherit.vehiculos</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='partner_id']" position="after">
+                <field name="vehiculo_ids"
+                       widget="many2many_tags"
+                       domain="[('cliente_id', 'in', [partner_id])]"
+                       options="{'no_create': True}"
+                       string="Vehículos relacionados"/>
+                <field name="kilometros" placeholder="Introduce los kilómetros actuales"/>
+            </xpath>
+
+        </field>
+    </record>
+</odoo>
