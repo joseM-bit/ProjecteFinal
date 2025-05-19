@@ -1,19 +1,17 @@
 <odoo>
-    <record id="view_move_form_inherit" model="ir.ui.view">
-        <field name="name">account.out.invoice.tree</field>
+    <record id="view_move_form_vehiculos_inherit" model="ir.ui.view">
+        <field name="name">account.move.form.vehiculos.inherit</field>
         <field name="model">account.move</field>
-        <field name="inherit_id" ref="account.out.invoice.tree"/>
+        <field name="inherit_id" ref="account.view_move_form"/>
         <field name="arch" type="xml">
-            <!-- Añadir los vehículos relacionados con más detalles -->
+            <!-- Justo debajo del cliente -->
             <xpath expr="//field[@name='partner_id']" position="after">
-                <field name="vehiculo_ids" widget="many2many_tags" options="{'no_create': True}" placeholder="Seleccione vehículos"/>
-            </xpath>
-
-            <!-- Aquí añadimos los campos adicionales de la clase 'vehiculo' -->
-            <xpath expr="//group[@name='invoice_details']" position="after">
-                <group>
-                    <field name="vehiculo_ids" widget="many2many_tags"/>
-                </group>
+                <field name="vehiculo_ids"
+                    widget="many2many_tags"
+                    options="{'no_create': True}"
+                    domain="[('cliente_id', 'in', partner_id)]"
+                    string="Vehículos relacionados"/>
+                <field name="kilometros" placeholder="Introduce kilómetros"/>
             </xpath>
         </field>
     </record>

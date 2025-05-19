@@ -7,12 +7,14 @@
             <form string="Vehículo">
                 <sheet>
                     <group>
-                        <field name="matricula"/>
+                        <field name="matricula"
+                               placeholder="Ejemplo: M123456, AB1234CD, 1234ABC, C1234ABC, R1234ABC"
+                               help="Formatos válidos según fecha de matriculación."/>
+                        <field name="fecha_matriculacion" widget="date" string="Fecha de matriculación"/>
                         <field name="numero_chasis"/>
                         <field name="marca"/>
                         <field name="modelo"/>
-                        <field name="ano"/>
-                        <field name="cliente_ids" widget="many2many_tags"/>
+                        <field name="cliente_id" widget="res_partner_many2one"/>
                     </group>
                 </sheet>
             </form>
@@ -26,10 +28,11 @@
         <field name="arch" type="xml">
             <tree string="Vehículos">
                 <field name="matricula"/>
+                <field name="fecha_matriculacion"/>
+                <field name="numero_chasis"/>
                 <field name="marca"/>
                 <field name="modelo"/>
-                <field name="ano"/>
-                <field name="cliente_ids" widget="many2many_tags"/>
+                <field name="cliente_id" widget="res_partner_many2one"/>
             </tree>
         </field>
     </record>
@@ -41,11 +44,11 @@
         <field name="arch" type="xml">
             <search string="Buscar Vehículo">
                 <field name="matricula"/>
+                <field name="numero_chasis"/>
                 <field name="marca"/>
                 <field name="modelo"/>
-                <field name="ano"/>
+                <field name="fecha_matriculacion"/>
             </search>
         </field>
     </record>
 </odoo>
-

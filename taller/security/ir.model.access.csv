@@ -1,3 +1,4 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-"access_vehiculo","Vehiculo","model_taller_vehiculo","base.group_user",1,1,1,1
-"access_orden","Orden","model_taller_orden","base.group_user",1,1,1,1
+access_vehiculo,Vehiculo,model_taller_vehiculo,base.group_user,1,1,1,1
+access_orden,Orden,model_taller_orden,base.group_user,1,1,1,1
+access_orden_repuesto_line,Línea de Repuestos,model_taller_orden_repuesto_line,base.group_user,1,1,1,1

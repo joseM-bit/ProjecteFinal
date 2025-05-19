@@ -1,6 +1,7 @@
-from odoo import models, fields, api
-from odoo.exceptions import ValidationError  # Asegúrate de importar esto
 
+from odoo import models, fields, api
+from odoo.exceptions import ValidationError
+import re
 class Vehiculo(models.Model):
     _name = 'taller.vehiculo'
     _description = 'Vehículo'
@@ -9,15 +10,17 @@ class Vehiculo(models.Model):
     numero_chasis = fields.Char(string="Número de chasis", required=True, index=True)
     marca = fields.Char()
     modelo = fields.Char()
-    ano = fields.Integer(string="Año")
-    cliente_ids = fields.Many2many('res.partner', string="Propietarios")
+    fecha_matriculacion = fields.Date(string="Fecha de matriculación")
+    cliente_id = fields.Many2one('res.partner',string="Propietario",required=True)
 
     def name_get(self):
         result = []
         for rec in self:
-            name = f"{rec.matricula or ''} - {rec.marca or ''} {rec.modelo or ''} ({rec.ano or ''})"
+            name = f"{rec.matricula or ''} - {rec.marca or ''} {rec.modelo or ''}"
             result.append((rec.id, name))
         return result
+
+
 
     @api.model
     def name_search(self, name='', args=None, operator='ilike', limit=100):
@@ -27,31 +30,29 @@ class Vehiculo(models.Model):
             domain = ['|', ('matricula', operator, name), ('numero_chasis', operator, name)]
         return self.search(domain + args, limit=limit).name_get()
 
-    @api.constrains('matricula')
+    @api.constrains('matricula', 'fecha_matriculacion')
     def _check_matricula(self):
+    # SOLO VALIDAR, NO MODIFICAR campos
         for record in self:
             if not record.matricula:
                 raise ValidationError("La matrícula no puede estar vacía.")
-            if len(record.matricula) < 5:
-                raise ValidationError("La matrícula debe tener al menos 5 caracteres.")
-            if not record.matricula.isalnum():
-                raise ValidationError("La matrícula solo puede contener caracteres alfanuméricos.")
+            if not record.fecha_matriculacion:
+                raise ValidationError("La fecha de matriculación es obligatoria para validar la matrícula.")
+
+            matricula = record.matricula.upper()
+            year = record.fecha_matriculacion.year
+
+            # Validar según año...
+            # sin modificar record.matricula aquí
 
     @api.constrains('numero_chasis')
     def _check_numero_chasis(self):
+        pattern = r'^[A-HJ-NPR-Z0-9]{17}$'  # Excluye I, O, Q
         for record in self:
             if not record.numero_chasis:
                 raise ValidationError("El número de chasis no puede estar vacío.")
-            if len(record.numero_chasis) < 5:
-                raise ValidationError("El número de chasis debe tener al menos 5 caracteres.")
-            if not record.numero_chasis.isalnum():
-                raise ValidationError("El número de chasis solo puede contener caracteres alfanuméricos.")
-
-    @api.constrains('ano')
-    def _check_ano(self):
-        for record in self:
-            if record.ano and (record.ano < 1886 or record.ano > fields.Date.today().year):
-                raise ValidationError("El año debe estar entre 1886 y el año actual.")
+            if not re.match(pattern, record.numero_chasis.upper()):
+                raise ValidationError("El número de chasis debe tener exactamente 17 caracteres alfanuméricos sin I, O ni Q.")
 
     @api.constrains('marca')
     def _check_marca(self):
@@ -73,13 +74,24 @@ class Vehiculo(models.Model):
             if not record.modelo.isalnum():
                 raise ValidationError("El modelo solo puede contener caracteres alfanuméricos.")
 
-    @api.constrains('cliente_ids')
-    def _check_cliente_ids(self):
+    @api.constrains('cliente_id')
+    def _check_cliente_id(self):
         for record in self:
-            if not record.cliente_ids:
-                raise ValidationError("El vehículo debe tener al menos un propietario.")
-            if len(record.cliente_ids) > 5:
-                raise ValidationError("El vehículo no puede tener más de 5 propietarios.")
-            for cliente in record.cliente_ids:
-                if not cliente.email:
-                    raise ValidationError(f"El propietario {cliente.name} debe tener un correo electrónico válido.")
+            if not record.cliente_id.email:
+                raise ValidationError(f"El propietario {record.cliente_id.name} debe tener un correo electrónico válido.")
+
+    def _to_upper(self, vals, campos):
+        for campo in campos:
+            if campo in vals and isinstance(vals[campo], str):
+                vals[campo] = vals[campo].upper()
+        return vals
+
+    @api.model
+    def create(self, vals):
+        vals = self._to_upper(vals, ['matricula', 'numero_chasis', 'marca', 'modelo'])
+        return super().create(vals)
+
+    def write(self, vals):
+        vals = self._to_upper(vals, ['matricula', 'numero_chasis', 'marca', 'modelo'])
+        return super().write(vals)
+

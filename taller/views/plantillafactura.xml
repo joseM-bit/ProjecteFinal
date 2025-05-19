@@ -1,0 +1,41 @@
+<odoo>
+    <report
+        id="report_invoice_custom"
+        model="account.move"
+        string="Factura Taller Personalizada"
+        report_type="qweb-pdf"
+        name="tu_modulo.report_plantillafactura_template"
+        file="tu_modulo.report_plantillafactura_template"
+        print_report_name="'Factura_' + object.name"
+    />
+
+    <template id="report_plantillafactura_template" inherit_id="account.report_invoice_document">
+
+        <!-- Eliminar el campo Origen -->
+        <xpath expr="//div[@name='origin']" position="replace"/>
+
+        <!-- Añadir info de vehículos y kilómetros dentro de la sección de informaciones -->
+        <xpath expr="//div[@id='informations']" position="inside">
+            <div class="vehiculos_info mt-4" t-if="o.vehiculo_ids">
+                <strong>Vehículos relacionados:</strong>
+                <ul>
+                    <t t-foreach="o.vehiculo_ids" t-as="vehiculo">
+                        <li>
+                            Matrícula: <t t-esc="vehiculo.matricula"/>,
+                            Marca: <t t-esc="vehiculo.marca"/>,
+                            Modelo: <t t-esc="vehiculo.modelo"/>
+                        </li>
+                    </t>
+                </ul>
+
+                <t t-if="o.kilometros">
+                    <div style="clear: both; width: 100%; margin-top: 10px;">
+                        <p style="margin: 0;">
+                            <strong>Kilómetros del Vehículo:</strong> <t t-esc="o.kilometros"/>
+                        </p>
+                    </div>
+                </t>
+            </div>
+        </xpath>
+    </template>
+</odoo>
