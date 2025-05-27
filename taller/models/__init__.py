@@ -9,3 +9,5 @@ from . import presupuesto
 from . import repuestoenlinea
 from . import productos
 from . import stock
+from . import empleados
+from . import facturas_no_pagadas

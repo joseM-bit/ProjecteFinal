@@ -12,7 +12,7 @@ class Vehiculo(models.Model):
     modelo = fields.Char()
     fecha_matriculacion = fields.Date(string="Fecha de matriculación")
     cliente_id = fields.Many2one('res.partner',string="Propietario",required=True)
-
+    
     def name_get(self):
         result = []
         for rec in self:

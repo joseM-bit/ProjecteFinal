@@ -7,7 +7,7 @@ class OrdenReparacion(models.Model):
     _description = 'Orden de Reparación'
 
     vehiculo_id = fields.Many2one('taller.vehiculo', string="Vehículo", required=True)
-    tecnico_id = fields.Many2one('res.users', string="Técnico")
+    tecnico_id = fields.Many2one('hr.employee', string="Técnico",required=True,ondelete='restrict')
     descripcion = fields.Text()
     fecha_inicio = fields.Date()
     fecha_fin = fields.Date()
@@ -39,13 +39,13 @@ class OrdenReparacion(models.Model):
         if self.factura_id:
             raise ValidationError("Ya hay una factura asociada a esta orden.")
 
-        if not self.vehiculo_id.cliente_ids:
+        if not self.vehiculo_id.cliente_id:
             raise ValidationError("El vehículo no tiene un propietario asignado.")
 
         # Crear factura base
         factura = self.env['account.move'].create({
             'move_type': 'out_invoice',
-            'partner_id': self.vehiculo_id.cliente_ids.id,
+            'partner_id': self.vehiculo_id.cliente_id.id,
             'invoice_origin': f"Orden de Reparación #{self.id}",
             'invoice_date': fields.Date.today(),
             'vehiculo_ids': [(6, 0, [self.vehiculo_id.id])],

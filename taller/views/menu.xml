@@ -58,6 +58,6 @@
     <menuitem id="menu_taller_orden" name="Albaranes" parent="menu_taller_root" action="action_taller_orden" sequence="30"/>
     <menuitem id="menu_taller_facturas" name="Facturas" parent="menu_taller_root" action="account.action_move_out_invoice_type" sequence="40"/>
     <menuitem id="menu_taller_presupuestos" name="Presupuestos" parent="menu_taller_root" action="sale.action_quotations_with_onboarding" sequence="50"/>
-    <menuitem id="menu_taller_productos" name="Productos" parent="menu_taller_root" action="action_taller_productos" sequence="60"/>
-    <menuitem id="menu_taller_stock_productos" name="Stock de Productos" parent="menu_taller_root" action="stock.action_product_stock_view"  sequence="70"/>
+    <!-- <menuitem id="menu_taller_productos" name="Productos" parent="menu_taller_root" action="action_taller_productos" sequence="60"/> -->
+    <menuitem id="menu_taller_stock_productos" name="Productos" parent="menu_taller_root" action="stock.action_product_stock_view"  sequence="70"/>
 </odoo>

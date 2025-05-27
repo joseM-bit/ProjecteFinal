@@ -22,4 +22,5 @@ class Factura(models.Model):
                 ])
             else:
                 move.vehiculo_ids = False  # Limpiar si no hay cliente
+                
 
